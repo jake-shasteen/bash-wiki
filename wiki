@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # - Will need to be able to fetch HTML
 #   - Maybe we want to cache it
@@ -7,10 +7,19 @@
 #   - Article sections
 #   - Recursive -- article sections will need first sentence, and may have subsections
 
-if [ -e walrus.html ]
+echo "$0 $1 $2 $3 $4"
+
+# Capitalize first character of $1
+first=`echo $1 | colrm 2`
+rest=`echo $1 | colrm 1 1`
+capitalized=`echo $first | tr '[a-z]' '[A-Z]'`$rest
+
+
+# Check if we have the html page cached
+if [[ -e $1.html ]]
   then
-    echo "Walrus exists."
+    echo "$1 exists."
   else
-    echo "Fetching Walrus"
-    curl "https://en.wikipedia.org/wiki/Walrus" > walrus.html
+    echo "Fetching $1"
+    curl "https://en.wikipedia.org/wiki/$capitalized" > $1.html
 fi
