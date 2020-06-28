@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# - Will need to be able to fetch HTML
+#   - Maybe we want to cache it
+# - Will need to be able to parse the HTML in certain ways
+#   - First sentence of article
+#   - Article sections
+#   - Recursive -- article sections will need first sentence, and may have subsections
+
+if [ -e walrus.html ]
+  then
+    echo "Walrus exists."
+  else
+    echo "Fetching Walrus"
+    curl "https://en.wikipedia.org/wiki/Walrus" > walrus.html
+fi
