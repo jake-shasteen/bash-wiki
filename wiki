@@ -7,6 +7,12 @@
 #   - Article sections
 #   - Recursive -- article sections will need first sentence, and may have subsections
 
+# We need at least the article name
+if [[ $# -lt 1 ]]; then
+    echo "Illegal number of parameters"
+    exit 0
+fi
+
 echo "$0 $1 $2 $3 $4"
 
 # Capitalize first character of $1
