@@ -22,6 +22,7 @@ capitalized=`echo $first | tr '[a-z]' '[A-Z]'`$rest
 
 
 # Check if we have the html page cached
+# TODO: Put caching behind a flag? Otherwise, keep it in memory?
 if [[ ! -e $1.html ]]
   then
     curl "https://en.wikipedia.org/wiki/$capitalized" > $1.html
