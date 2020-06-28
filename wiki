@@ -32,11 +32,11 @@ if [[ $# -eq 1 ]]
     # TODO: Handle making it only the first sentence
     cat $1.html | grep '<p>' | head -2 | sed 's/<[^>]*>//g'
     echo ""
-    cat $1.html | grep 'toclevel-1' | sed 's/<[^>]*>//g'
+    cat $1.html | grep 'toclevel-1' | sed 's/<[^>]*>//g' | sed 's/\([^0-9]\) /\1_/g'
   else
     # TODO: Handle 'note' edge case better
     # TODO: Handle further subsections
     cat $1.html | grep -i "id=\"$2\"" -A1 | tail -n 1 | sed 's/<[^>]*>//g'
     echo ""
-    cat $1.html | grep "toclevel" | grep -i $2 -A20 | awk '/toclevel-1/{p++} p==2{exit} p>=1' | sed 's/<[^>]*>//g'
+    cat $1.html | grep "toclevel" | grep -i $2 -A20 | awk '/toclevel-1/{p++} p==2{exit} p>=1' | sed 's/<[^>]*>//g' | sed 's/\([^0-9]\) /\1_/g'
 fi
