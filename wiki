@@ -8,12 +8,12 @@
 #   - Recursive -- article sections will need first sentence, and may have subsections
 
 # We need at least the article name
-if [[ $# -lt 1 ]]; then
+if [[ $# -lt 1 ]]
+  then
     echo "Illegal number of parameters"
     exit 0
 fi
 
-echo "$0 $1 $2 $3 $4"
 
 # Capitalize first character of $1
 first=`echo $1 | colrm 2`
@@ -22,10 +22,21 @@ capitalized=`echo $first | tr '[a-z]' '[A-Z]'`$rest
 
 
 # Check if we have the html page cached
-if [[ -e $1.html ]]
+if [[ ! -e $1.html ]]
   then
-    echo "$1 exists."
-  else
-    echo "Fetching $1"
     curl "https://en.wikipedia.org/wiki/$capitalized" > $1.html
+fi
+
+if [[ $# -eq 1 ]]
+  then
+    # TODO: Handle making it only the first sentence
+    cat $1.html | grep '<p>' | head -2 | sed 's/<[^>]*>//g'
+    echo ""
+    cat $1.html | grep 'toclevel-1' | sed 's/<[^>]*>//g'
+  else
+    # TODO: Handle 'note' edge case better
+    # TODO: Handle further subsections
+    cat $1.html | grep -i "id=\"$2\"" -A1 | tail -n 1 | sed 's/<[^>]*>//g'
+    echo ""
+    cat $1.html | grep "toclevel" | grep -i $2 -A20 | awk '/toclevel-1/{p++} p==2{exit} p>=1' | sed 's/<[^>]*>//g'
 fi
